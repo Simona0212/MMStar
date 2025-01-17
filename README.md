@@ -18,7 +18,7 @@
 
 ## 环境配置与运行方法
 
-详见[[系统设计与开发文档](https://github.com/Simona0212/MMStar/blob/main/MMStar%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3.pdf)]4.2节。
+详见[系统设计与开发文档](https://github.com/Simona0212/MMStar/blob/main/MMStar%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3.pdf)4.2节。
 
 ### 关于账号
 

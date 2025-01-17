@@ -1,0 +1,313 @@
+/* static/css/styles.css */
+
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+} */
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333; /* 文本颜色 */
+    background: linear-gradient(180deg, #D8BFD8 0%, #eef1f5 100%);
+    margin: 0;
+    padding: 0;
+}
+
+
+.login-container {
+    background-color: #FFF6FF;
+    padding: 20px; /* 顶部和底部留出空间 */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 1200px; /* 最大宽度 */
+    height: 500px; /* 最大高度 */
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.page-container {
+    padding-top: 70px;
+    /* 确保内容不会被固定导航栏遮挡 */
+    min-height: 100vh;
+    /* 确保至少占据整个视口高度 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    background-color: #333;
+    padding: 1em;
+}
+
+nav a {
+    color: white;
+    margin-right: 1em;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+.homepage {
+    color: gray;
+    font-size: large;
+    font-weight: bold;
+}
+
+/* .container {
+    padding: 2em;
+} */
+
+.container {
+    max-width: 1200px;
+    /* margin: auto; */
+    padding: 2em;
+    background-color: #fffaff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* 确保消息可见 */
+    position: relative;
+    z-index: 1;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2em;
+    color: #6c757d;
+    /* font-family: 'Georgia', serif; */
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.module {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.5em;
+    color: #495057;
+    /* font-family: 'Georgia', serif; */
+    margin-bottom: 15px;
+    /* font-weight: bold; */
+}
+
+.message {
+    padding: 1em  !important;
+    margin-bottom: 1em !important;
+    /* background-color: #c6e3f9;
+    color: #1c1d72; */
+}
+
+.message.error {
+    background-color: #FF764A !important;
+    color: #721c24 !important;
+}
+
+.message.success {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+}
+.message.alert {
+    background-color: #c6e3f9 !important;
+    color: #1c1d72 !important;
+}
+
+table {
+    /* width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em; */
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    /* border: 1px solid #ddd; */
+    border: 2px solid #6c5ce7; /* 深紫色边框 */
+    padding: 10px;
+    text-align: center;
+} /* 表格边框 */
+
+th {
+    /* padding: 0.5em;
+    text-align: left; */
+    background-color: #eaeaea;
+}
+/*th是表头，td是表格数据*/
+h1 {
+    font-size: 5rem;
+    /* 增大字体 */
+    margin-bottom: 20px;
+    color: #7851A9;
+}
+
+h2 small {
+    display: block;
+    margin-top: -10px;
+    font-size: 2rem;
+    color: #B39DB7;
+}
+/* 
+h2, h3 {
+    color: #333;
+} */
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.admin-dashboard {
+    display: flex;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px; /* 间距 */
+    color: #555;
+    font-size: large;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.delete-btn {
+    background-color: #d93977; /* 紫红色 */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #9c1647;
+}
+
+.edit-btn{
+    background-color: #7851A9; /* 橙色 */
+    color: white;
+    border: none;
+    padding: 8px 12px; /* 上下左右内边距 */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /*处于表格中的按钮：左右、上下居中*/
+
+}
+
+.edit-btn:hover {
+    background-color: #5a3a7b;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 1em;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 0.5em;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1em;
+}
+
+.input-long {
+    width: 300px; /* 调整宽度以适应您的需求 */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 轮播样式 */
+#myCarousel {
+    /* width: 90%; */
+    width: auto;
+    max-width: 1200px;
+    height: auto;
+    /* height: 60vh; */
+    /* overflow: hidden; 隐藏溢出内容 */
+    overflow: hidden;
+    margin-bottom: 30px;
+    /* 下移轮播组件 */
+    border-radius: 10px;
+    /* 圆角 */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    /* 阴影 */
+    /*居中*/
+    margin: 0 auto;
+}
+
+.carousel-inner .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
+/* 手机设备 */
+@media (max-width: 768px) {
+    #myCarousel {
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .carousel-inner .item img {
+        height: auto;
+        max-height: 200px;
+    }
+
+    .content {
+        padding: 20px;
+        margin-top: 0;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        /* 在小屏幕上适当减小字体 */
+    }
+}
+/* @media (max-width: 600px) {
+    .admin-dashboard {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+} */

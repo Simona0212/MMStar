@@ -33,7 +33,7 @@
 
 ### 关于API Key
 
-为保障作者的财产安全，提交的数据库系统已删除全部用于演示的API Key。[系统设计和开发文档](https://github.com/Simona0212/MMStar/blob/main/MMStar%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3.pdf)4.3节介绍了如何获取和配置合适的API Key。
+[系统设计和开发文档](https://github.com/Simona0212/MMStar/blob/main/MMStar%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3.pdf)4.3节介绍了如何获取和配置合适的API Key。
 
 ### 关于Prompt
 

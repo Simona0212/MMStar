@@ -1,0 +1,12 @@
+<!-- templates/edit_course.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">编辑课程信息：{{ course.Name }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">确认修改</button>
+        <a href="{% url 'course_detail' course.CourseID %}" class="btn btn-secondary">取消</a>
+    </form>
+{% endblock %}

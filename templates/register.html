@@ -1,0 +1,61 @@
+<!-- templates/register.html -->
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="login-container">
+    <h2>注 册</h2>
+    <form method="POST" class="login-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="role">注册类型：</label>
+            <select name="role" id="role" required class="input-field">
+                <option value="teacher">教师</option>
+                <option value="student">学生</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="email">姓名：</label>
+            <input type="email" class="input-field" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱：</label>
+            <input type="email" class="input-field" name="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码：</label>
+            <input type="password" class="input-field" name="password" id="password" required>
+        </div>
+        
+        <button type="submit" class="submit-btn">注册</button>
+    </form>
+</div>
+
+<style>
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #71A9FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #6376A9;
+}
+</style>
+
+{% endblock %}
+

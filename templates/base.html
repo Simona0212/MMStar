@@ -1,0 +1,184 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    {% load static %}
+    <link href="{% static '/img/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+    <link rel="icon" href="{% static '/img/favicon.ico' %}" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>慧评星智能阅卷与反馈系统</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap337.min.css' %}">
+    <!-- 集成Bootstrap CSS以增强样式 -->
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+    <!-- <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script> -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap337.min.js' %}"></script>
+    <!-- <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <style>
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #4B0082;
+            /* 紫色 */
+            border-bottom: 2px solid darken(#4B0082, 10%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a.navbar-brand img {
+            width: 57px;
+            /* 设置图标的宽度 */
+            height: 57px;
+            /* 设置图标的高度 */
+            vertical-align: middle;
+            /* 垂直居中对齐 */
+        }
+
+        .navbar a.navbar-brand,
+        .navbar a.nav-link {
+            color: white !important;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            font-size: x-large;
+            /* 垂直居中对齐 */
+        }
+
+        .navbar .navbar-toggle {
+            border-color: white;
+        }
+
+        .navbar .icon-bar {
+            background-color: white;
+        }
+
+
+        /* 修改“有问题请联系”的颜色 */
+        address {
+            margin-top: 40px;
+            font-style: normal;
+            color: #601F51;
+        }
+
+        address {
+            margin-top: 40px;
+            /* 下移“有问题请联系”部分 */
+            font-style: normal;
+        }
+
+        /* 修改邮箱链接的颜色 */
+        address a {
+            color: #DDA0DD;
+            /* 更改为亮蓝色 */
+            text-decoration: none;
+            /* 可选：移除下划线 */
+        }
+
+        .message {
+            padding: 1em !important;
+            margin-bottom: 1em !important;
+            /* background-color: #c6e3f9;
+    color: #1c1d72; */
+        }
+
+        .message.error {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+        }
+
+        .message.success {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+        }
+
+        .message.alert {
+            background-color: #c6e3f9 !important;
+            color: #1c1d72 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-container container-fluid"> <!-- 为了使页面内容居中，将内容放在一个容器中 -->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar-collapse">
+                        <span class="sr-only">切换导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand img" href="#">
+                        <img src="{% static '/img/logo_silver.png' %}" alt="Icon" class="d-inline-block align-top me-2"
+                            loading="lazy">
+                    </a>
+                    <a class="navbar-brand" href="{% url 'home' %}">慧评星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        {% if request.session.admin_id %}
+                        <li class="active">
+                            <a class="homepage" href="{% url 'admin_dashboard' %}">管理员主页</a>
+                        </li>
+                        {% elif request.session.teacher_id %}
+                        <li class="active">
+                            <a class="homepage" href="{% url 'teacher_dashboard' %}">教师主页</a>
+                        </li>
+                        {% elif request.session.student_id %}
+                        <li class="active">
+                            <a class="homepage" href="{% url 'student_dashboard' %}">学生主页</a>
+                        </li>
+                        {% else %}
+                        <li class="active"><a class="homepage" href="{% url 'home' %}">主页</a></li>
+                        {% endif %}
+
+                        {% if request.session.admin_id or request.session.teacher_id or request.session.student_id %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">登出</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">注册</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} in" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Bootstrap JS和依赖项（例如jQuery和Popper.js） -->
+        <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+        <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script> -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </div>
+</body>
+
+</html>

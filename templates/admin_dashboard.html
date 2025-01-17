@@ -1,0 +1,202 @@
+<!-- templates/admin_dashboard.html -->
+{% extends 'base.html' %} <!-- 继承自base.html模板 -->
+
+{% load static %} <!-- 加载静态文件标签库 -->
+
+{% block content %} <!-- 定义content块 -->
+<h2 class="page-title">管理员主页</h2>
+
+<!-- 教师管理模块 -->
+<div class="module mb-5">
+    <h3 class="section-title">教师管理</h3>
+    <a href="{% url 'add_teacher' %}" class="btn btn-primary mb-2">添加教师</a>
+    <br><br>
+    <form method="POST" action="{% url 'delete_teachers' %}">
+        {% csrf_token %}
+        <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all-teachers"></th>
+                    <th>教师ID</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="teacher-tbody">
+                {% for teacher in teachers %}
+                <tr>
+                    <td><input type="checkbox" name="teacher_ids" class="teacher-checkbox" value="{{ teacher.TeacherID }}"></td>
+                    <td>{{ teacher.TeacherID }}</td>
+                    <td>{{ teacher.Name }}</td>
+                    <td>{{ teacher.Email|default:"无" }}</td>
+                    <td>
+                        <a href="{% url 'edit_teacher' teacher.TeacherID %}" class="btn btn-sm edit-btn">编辑</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">暂无教师</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+    </div>
+        <button type="submit" class="delete-btn">删除选中的教师</button>
+    </form>
+    
+</div>
+
+<!-- 学生管理模块 -->
+<div class="module mb-5">
+    <h3 class="section-title">学生管理</h3>
+    <a href="{% url 'add_student' %}" class="btn btn-primary mb-2">添加学生</a>
+    <br><br>
+    <form method="POST" action="{% url 'delete_students' %}">
+        {% csrf_token %}
+        <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all-students"></th>
+                    <th>学生ID</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="student-tbody">
+                {% for student in students %}
+                <tr>
+                    <td><input type="checkbox" name="student_ids" class="student-checkbox" value="{{ student.StudentID }}"></td>
+                    <td>{{ student.StudentID }}</td>
+                    <td>{{ student.Name }}</td>
+                    <td>{{ student.Email|default:"无" }}</td>
+                    <td>
+                        <a href="{% url 'edit_student' student.StudentID %}" class="btn btn-sm edit-btn">编辑</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">暂无学生</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+    </div>
+        <button type="submit" class="delete-btn">删除选中的学生</button>
+    </form>
+    
+</div>
+
+
+
+<!-- API KEY 管理模块 -->
+<div class="module mb-5">
+    <h3 class="section-title">API KEY 管理</h3>
+    <a href="{% url 'api_key_management' %}" class="btn btn-primary">管理 API KEY</a>
+</div>
+
+<!-- 试题管理模块 -->
+<div class="module mb-5">
+    <h3 class="section-title">试题管理</h3>
+    <a href="{% url 'add_question' %}" class="btn btn-primary mb-3">添加试题</a>
+    <br><br>
+    <div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>试题ID</th>
+                <th>课程名称</th>
+                <th>标题</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+            <tr>
+                <td>{{ question.QuestionID }}</td>
+                <td>{{ question.CourseID.Name }}</td>
+                <td>{{ question.Title }}</td>
+                <td>
+                    {% if question.IsOpen %}
+                    已公开
+                    {% else %}
+                    未公开
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'edit_question_prompt' question.QuestionID %}" class="btn btn-sm edit-btn">编辑
+                        Prompt</a>
+                    <!-- 其他操作按钮 -->
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">暂无试题</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+<!-- 操作日志查看模块 -->
+<div class="module mb-5">
+    <h3 class="section-title">操作日志</h3>
+    <a href="{% url 'view_operation_logs' %}" class="btn btn-primary">查看操作日志</a>
+</div>
+
+<style>
+/* 
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+} */
+
+
+</style>
+
+
+    <script>
+        // 通用函数：全选/取消全选逻辑和复选框状态同步
+        function setupCheckboxLogic(selectAllId, checkboxClass) {
+            const selectAllCheckbox = document.getElementById(selectAllId);
+            const checkboxes = document.querySelectorAll('.' + checkboxClass);
+    
+            // 全选/取消全选事件监听
+            selectAllCheckbox.addEventListener('change', function () {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+    
+            // 单个复选框状态改变时更新全选框状态
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    // 如果有未选中的复选框，则取消全选复选框的勾选状态
+                    if (!checkbox.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                    // 如果所有复选框都被勾选，则勾选全选复选框
+                    if (Array.from(checkboxes).every(checkbox => checkbox.checked)) {
+                        selectAllCheckbox.checked = true;
+                    }
+                });
+            });
+        }
+    
+        // 设置教师管理模块的复选框逻辑
+        setupCheckboxLogic('select-all-teachers', 'teacher-checkbox');
+    
+        // 设置学生管理模块的复选框逻辑
+        setupCheckboxLogic('select-all-students', 'student-checkbox');
+    </script>
+{% endblock %}

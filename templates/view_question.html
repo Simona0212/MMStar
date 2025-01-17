@@ -1,0 +1,49 @@
+<!-- users/templates/view_question.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">试题：{{ question.Title }}</h2>
+<label>题目：</label>
+<p>{{ question.Content }}</p>
+<hr>
+
+<!-- 显示提交状态 -->
+{% if existing_answer %}
+<p>您已提交答案：{{ existing_answer.SubmittedAt }}</p>
+<hr>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% if existing_answer %}
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-check-circle text-success"></i> <label>上次提交</label>
+    </div>
+    <div class="card-body">
+        {% if student_answer.Content %}
+        <div class="custom-scrollable-content bg-light p-3 border rounded" style="max-height: 250px; overflow-y: auto;">
+            {{ student_answer.Content|linebreaks }}
+        </div>
+        {% else %}
+        <p class="text-muted">暂无内容</p>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+<hr>
+<h3>{% if existing_answer %}修改答案{% else %}开始作答{% endif %}</h3>
+    <h5 small style="color:dimgrey;">请在下方输入您的答案或上传txt, md格式的文件。重新提交会覆盖当前的提交记录。</h5>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">
+        {% if existing_answer %}
+        {{ '修改并提交'}}
+        {% else %}
+        {{ '提交答案' }}
+        {% endif %}
+    </button>
+    <a href="{% url 'student_course_detail' question.CourseID.CourseID %}" class="btn btn-secondary">取消</a>
+</form>
+{% endblock %}

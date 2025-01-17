@@ -1,0 +1,58 @@
+<!-- templates/leave_course.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">退出课程</h2>
+<form method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 7%;"><input type="checkbox" id="select-all-courses"></th>
+                <th style="width: 10%;">课程ID</th>
+                <th style="width: 20%;">课程名称</th>
+                <th style="width: 63%;">描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sc in enrolled_courses %}
+            <tr>
+                <td><input type="checkbox" name="course_ids" class="course-checkbox" value="{{ sc.CourseID.CourseID }}"></td>
+                <td>{{ sc.CourseID.CourseID }}</td>
+                <td>{{ sc.CourseID.Name }}</td>
+                <td style="text-align: left;">{{ sc.CourseID.Description|default:"无" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">您尚未加入任何课程</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-danger">退出选中的课程</button>
+    <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">取消</a>
+</form>
+
+<script>
+    // 全选/取消全选课程
+    const selectAllCourses = document.getElementById('select-all-courses');
+    const courseCheckboxes = document.querySelectorAll('.course-checkbox');
+
+    selectAllCourses.addEventListener('change', function () {
+        courseCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCourses.checked;
+        });
+    });
+
+    courseCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            if (!checkbox.checked) {
+                selectAllCourses.checked = false;
+            }
+            if (Array.from(courseCheckboxes).every(checkbox => checkbox.checked)) {
+                selectAllCourses.checked = true;
+            }
+        });
+    });
+</script>
+{% endblock %}

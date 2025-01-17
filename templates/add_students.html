@@ -1,0 +1,48 @@
+<!-- templates/add_students.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">添加学生到课程：{{ course.Name }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div id="student-entries">
+            <div class="student-entry">
+                <h4>学生 1</h4>
+                <div class="form-group">
+                    <label for="id_name_0">姓名:</label>
+                    <input type="text" name="name" id="id_name_0" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_email_0">邮箱:</label>
+                    <input type="email" name="email" id="id_email_0" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="add-student" class="btn btn-secondary mb-3">添加更多学生</button>
+        <br><br>
+        <button type="submit" class="btn btn-success">确认添加</button>
+        <a href="{% url 'course_detail' course.CourseID %}" class="btn btn-secondary">取消</a>
+    </form>
+
+    <script>
+        let studentCount = 1;
+        document.getElementById('add-student').onclick = function() {
+            studentCount += 1;
+            const studentEntries = document.getElementById('student-entries');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'student-entry';
+            newEntry.innerHTML = `
+                <h4>学生 ${studentCount}</h4>
+                <div class="form-group">
+                    <label for="id_name_${studentCount - 1}">姓名:</label>
+                    <input type="text" name="name" id="id_name_${studentCount - 1}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_email_${studentCount - 1}">邮箱:</label>
+                    <input type="email" name="email" id="id_email_${studentCount - 1}" class="form-control" required>
+                </div>
+            `;
+            studentEntries.appendChild(newEntry);
+        }
+    </script>
+{% endblock %}

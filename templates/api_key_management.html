@@ -1,0 +1,104 @@
+<!-- templates/api_key_management.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">API KEY 管理</h2>
+    
+    <a href="{% url 'add_api_key' %}" class="btn btn-primary mb-3">新增分配</a>
+    <br><br>
+    <form method="POST" action="{% url 'delete_api_keys' %}">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all-keys"></th>
+                    <th>KeyID</th>
+                    <th>教师姓名</th>
+                    <th>模型名称</th>
+                    <th>版本号</th>
+                    <th>API Key 值</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key in api_keys %}
+                <tr>
+                    <td><input type="checkbox" name="key_ids" class="key-checkbox" value="{{ key.KeyID }}"></td>
+                    <td>{{ key.KeyID }}</td>
+                    <td>{{ key.TeacherID.Name }}</td>
+                    <td>{{ key.Model }}</td>
+                    <td>{{ key.Version }}</td>
+                    <td>
+                        <span class="api-key-value" data-key="{{ key.KeyValue }}">************************************************************</span>
+                        <button type="button" class="btn btn-sm btn-secondary toggle-api-key">显示KEY</button>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'toggle_api_key_status' key.KeyID %}" class="btn btn-sm btn-info">
+                            {% if key.Status %}启用{% else %}禁用{% endif %}
+                        </a>
+                        
+                    </td>
+
+                    <td>
+                        <a href="{% url 'edit_api_key' key.KeyID %}" class="btn btn-sm edit-btn">编辑</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">暂无API Key分配</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="delete-btn">删除选中的API Key分配</button>
+    </form>
+    
+    <script>
+        // 全选/取消全选 API Keys
+        const selectAllKeys = document.getElementById('select-all-keys');
+        const keyCheckboxes = document.querySelectorAll('.key-checkbox');
+    
+        selectAllKeys.addEventListener('change', function () {
+            keyCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllKeys.checked;
+            });
+        });
+    
+        keyCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (!checkbox.checked) {
+                    selectAllKeys.checked = false;
+                }
+                if (Array.from(keyCheckboxes).every(checkbox => checkbox.checked)) {
+                    selectAllKeys.checked = true;
+                }
+            });
+        });
+    
+        // 切换 API Key 显示/隐藏
+        document.querySelectorAll('.toggle-api-key').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const span = this.previousElementSibling;
+                const key = span.getAttribute('data-key');
+                if (span.textContent === '************************************************************') {
+                    span.textContent = key;
+                    this.textContent = '隐藏KEY';
+                    this.classList.remove('btn-secondary');
+                    this.classList.add('btn-info');
+                } else {
+                    span.textContent = '************************************************************';
+                    this.textContent = '显示KEY';
+                    this.classList.remove('btn-info');
+                    this.classList.add('btn-secondary');
+                }
+            });
+        });
+    </script>
+
+     <div class="mt-3">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">返回管理员主页</a>
+    </div>
+
+{% endblock %}

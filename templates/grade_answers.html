@@ -1,0 +1,119 @@
+<!-- users/templates/grade_answers.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<h2 class="page-title">评分试题：{{ question.Title }}</h2>
+<p>{{ question.Content }}</p>
+<hr>
+
+<h3 class="section-title">学生答案列表</h3>
+<div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div class="mb-3" style="text-align: center;">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-auto me-3">
+                <label for="model_choice" class="form-label">选择大模型：</label>
+                <select id="model_choice" class="form-select" style="width: 350px;">
+                    {% for key in teacher_api_keys %}
+                    <option value="{{ key.KeyID }}">{{ key.Model }}: {{ key.Version }}</option>
+                    {% empty %}
+                    <option value="" disabled>无可用的大模型</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button id="batch-grade-btn" class="btn btn-primary">批量智能评分</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="select-all-answers"></th>
+            <th>答案ID</th>
+            <th>学生ID</th>
+            <th>学生姓名</th>
+            <th>当前分数</th>
+            <th>提交时间</th>
+            <th>评价状态</th>
+            <th>发布状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in answer_feedbacks %}
+        <tr>
+            <td><input type="checkbox" class="answer-checkbox" value="{{ item.answer.AnswerID }}"></td>
+            <td>{{ item.answer.AnswerID }}</td>
+            <td>{{ item.answer.StudentID.StudentID }}</td>
+            <td>{{ item.answer.StudentID.Name }}</td>
+            <td>{% if item.cur_feedback and item.cur_feedback.Score %}
+                {{ item.cur_feedback.Score }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td>{{ item.answer.SubmittedAt }}</td>
+            <td>
+                {% if item.has_feedback %}
+                <span class="badge bg-success">✅ 已评价</span>
+                {% else %}
+                <span class="badge bg-secondary">❌ 未评价</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if item.answer.ConfirmedAt %}
+                <span class="badge bg-success">✅ 已发布</span>
+                {% else %}
+                <span class="badge bg-secondary">❌ 未发布</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'view_and_grade_answer' course.CourseID question.QuestionID item.answer.AnswerID %}"
+                    class="btn btn-sm btn-info">查看答案与评价</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">暂无学生提交的答案</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('select-all-answers').onclick = function () {
+            var checkboxes = document.querySelectorAll('.answer-checkbox');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = this.checked;
+            }, this);
+        };
+
+        // 更新 "全选" 复选框的状态
+        document.querySelectorAll('.answer-checkbox').forEach(function (checkbox) {
+            checkbox.onclick = function () {
+                var allChecked = document.querySelectorAll('.answer-checkbox:checked').length === document.querySelectorAll('.answer-checkbox').length;
+                document.getElementById('select-all-answers').checked = allChecked;
+            };
+        });
+    });
+</script>
+
+<hr>
+
+<!-- 传递 course_id 和 question_id 给 JavaScript -->
+{{ course.CourseID|json_script:"course-id" }}
+{{ question.QuestionID|json_script:"question-id" }}
+
+<!-- 引入前端 JavaScript -->
+<script src="{% static 'js/grade_answers.js' %}"></script>
+
+<div class="mt-3"></div>
+<a href="{% url 'course_detail' course.CourseID %}" class="btn btn-secondary">返回课程详情</a>
+</div>
+{% endblock %}

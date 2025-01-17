@@ -1,0 +1,91 @@
+<!-- templates/student_course_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">课程详情：{{ course.CourseID }} - {{ course.Name }}</h2>
+<label>授课教师：{{ teacher.Name }}</label>
+<p>{{ course.Description|default:"无" }}</p>
+<hr>
+
+    <!-- 我的试题模块 -->
+    <div class="mb-4">
+        <h3 class="section-title">当前开放试题</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>试题ID</th>
+                    <th>标题</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question in questions %}
+                <tr>
+                    <td>{{ question.QuestionID }}</td>
+                    <td>{{ question.Title }}</td>
+                    <td>
+                        {% if question.QuestionID in answered_question_ids %}
+                        ✅ 已提交
+                        {% else %}
+                        ⚠️ 未提交
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'view_question' course.CourseID question.QuestionID %}" class="btn btn-sm btn-info">
+                            {{ '开始答题' }}
+                        </a>
+                    </td>
+                </tr>
+                
+                {% empty %}
+                <tr>
+                    <td colspan="4">暂无公开试题</td>
+                </tr>
+                {% endfor %}
+               
+            </tbody>
+        </table>
+    </div>
+
+<!-- 我的历史记录模块 -->
+<div class="mb-4">
+    <h3 class="section-title">我的历史记录</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>答案ID</th>
+                <th>试题标题</th>
+                <th>提交时间</th>
+                <th>分数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in student_answers %}
+            <tr>
+                <td>{{ answer.AnswerID }}</td>
+                <td>{{ answer.QuestionID.Title }}</td>
+                <td>{{ answer.SubmittedAt }}</td>
+                <td>{% if answer.final_feedbacks %}
+                    {{ answer.final_feedbacks.0.Score }}  <!-- 只有一条最终评分 -->
+                    {% else %}
+                    {{ 未评分 }}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url 'student_history_detail' course.CourseID answer.AnswerID %}" class="btn btn-sm btn-info">查看详情</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">暂无历史记录</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-3">
+    <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">返回学生主页</a>
+</div>
+{% endblock %}

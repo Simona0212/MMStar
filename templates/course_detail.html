@@ -1,0 +1,151 @@
+<!-- templates/course_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">课程详情：{{ course.Name }}</h2>
+    <p style="font-size: small;">{{ course.Description|default:"无" }}</p>
+    <a href="{% url 'edit_course' course.CourseID %}" class="btn btn-sm edit-btn">编辑课程信息</a>
+    <hr>
+
+    <!-- 学生管理 -->
+<h3 class="section-title">学生名单</h3>
+<a href="{% url 'add_students' course.CourseID %}" class="btn btn-primary mb-2">添加学生</a>
+<br><br>
+<form method="POST" action="{% url 'remove_students' course.CourseID %}">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all-students"></th>
+                <th>学生ID</th>
+                <th>姓名</th>
+                <th>邮箱</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sc in students %}
+            <tr>
+                <td><input type="checkbox" name="student_ids" class="student-checkbox" value="{{ sc.StudentID.StudentID }}"></td>
+                <td>{{ sc.StudentID.StudentID }}</td>
+                <td>{{ sc.StudentID.Name }}</td>
+                <td>{{ sc.StudentID.Email|default:"无" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">暂无学生</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="delete-btn">删除选中的学生</button>
+</form>
+
+<script>
+    // 获取全选复选框和所有学生复选框
+    const selectAllStudents = document.getElementById('select-all-students');
+    const studentCheckboxes = document.querySelectorAll('.student-checkbox');
+
+    // 全选/取消全选事件监听
+    selectAllStudents.addEventListener('change', function () {
+        studentCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllStudents.checked;
+        });
+    });
+
+    // 单个复选框状态改变时更新全选框状态
+    studentCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            // 如果有未选中的复选框，则取消全选复选框的勾选状态
+            if (!checkbox.checked) {
+                selectAllStudents.checked = false;
+            }
+            // 如果所有复选框都被勾选，则勾选全选复选框
+            if (Array.from(studentCheckboxes).every(checkbox => checkbox.checked)) {
+                selectAllStudents.checked = true;
+            }
+        });
+    });
+</script>
+
+<hr>
+
+<!-- 试题管理 -->
+<h3 class="section-title">试题列表</h3>
+<a href="{% url 'create_question' course.CourseID %}" class="btn btn-primary mb-2">创建试题</a>
+<br><br>
+<form method="POST" action="{% url 'delete_questions' course.CourseID %}">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all-questions"></th>
+                <th>试题ID</th>
+                <th>标题</th>
+                <th>是否公开</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+            <tr>
+                <td><input type="checkbox" name="question_ids" class="question-checkbox" value="{{ question.QuestionID }}"></td>
+                <td>{{ question.QuestionID }}</td>
+                <td>{{ question.Title }}</td>
+                <td>{{ question.IsOpen|yesno:"公开,封闭" }}</td>
+                <td>{{ question.CreatedAt }}</td>
+                <td>
+                    <a href="{% url 'edit_question' course.CourseID question.QuestionID %}" class="btn btn-sm edit-btn">编辑</a>
+
+                    <a href="{% url 'toggle_question_visibility' course.CourseID question.QuestionID %}" class="btn btn-sm btn-info">
+                        {% if question.IsOpen %}封闭{% else %}公开{% endif %}
+                    </a>
+                    
+                    <a href="{% url 'grade_answers' course.CourseID question.QuestionID %}" class="btn btn-sm btn-primary">去评分</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">暂无试题</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="delete-btn">删除选中的试题</button>
+</form>
+
+<script>
+    // 获取全选复选框和所有试题复选框
+    const selectAllQuestions = document.getElementById('select-all-questions');
+    const questionCheckboxes = document.querySelectorAll('.question-checkbox');
+
+    // 全选/取消全选事件监听
+    selectAllQuestions.addEventListener('change', function () {
+        questionCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllQuestions.checked;
+        });
+    });
+
+    // 单个复选框状态改变时更新全选框状态
+    questionCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            // 如果有未选中的复选框，则取消全选复选框的勾选状态
+            if (!checkbox.checked) {
+                selectAllQuestions.checked = false;
+            }
+            // 如果所有复选框都被勾选，则勾选全选复选框
+            if (Array.from(questionCheckboxes).every(checkbox => checkbox.checked)) {
+                selectAllQuestions.checked = true;
+            }
+        });
+    });
+</script>
+
+    
+
+<hr>
+    <!-- 添加“返回上一页”按钮 -->
+    <div class="mt-3">
+        <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">返回教师主页</a>
+    </div>
+{% endblock %}

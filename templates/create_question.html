@@ -1,0 +1,12 @@
+<!-- templates/create_question.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">在课程 "{{ course.Name }}" 中创建试题</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">确认创建</button>
+        <a href="{% url 'course_detail' course.CourseID %}" class="btn btn-secondary">取消</a>
+    </form>
+{% endblock %}

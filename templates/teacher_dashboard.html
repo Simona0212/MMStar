@@ -1,0 +1,65 @@
+<!-- templates/teacher_dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">教师主页</h2>
+    <a href="{% url 'create_course' %}" class="btn btn-primary">创建课程</a>
+    <br><br>
+    <form method="POST" action="{% url 'delete_courses' %}">
+        {% csrf_token %}
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th style="width: 7%;">课程ID</th>
+                    <th style="width: 13%;">课程名称</th>
+                    <th style="width: 60%;">课程描述</th>
+                    <th style="width: 20%;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><input type="checkbox" name="course_ids" class="course-checkbox" value="{{ course.CourseID }}"></td>
+                    <td>{{ course.CourseID }}</td>
+                    <td><a href="{% url 'course_detail' course.CourseID %}">{{ course.Name }}</a></td>
+                    <td style="text-align: left;">{{ course.Description|default:"无" }}</td>
+                    <td>
+                        <a href="{% url 'edit_course' course.CourseID %}" class="btn btn-sm edit-btn">编辑</a>
+                      
+                        <a href="{% url 'course_detail' course.CourseID %}" class="btn btn-sm btn-info">查看</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">暂无课程</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="delete-btn">删除选中的课程</button>
+    </form>
+
+    <script>
+        // 全选/取消全选课程
+        const selectAllCourses = document.getElementById('select-all');
+        const courseCheckboxes = document.querySelectorAll('.course-checkbox');
+    
+        selectAllCourses.addEventListener('change', function () {
+            courseCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCourses.checked;
+            });
+        });
+    
+        courseCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (!checkbox.checked) {
+                    selectAllCourses.checked = false;
+                }
+                if (Array.from(courseCheckboxes).every(checkbox => checkbox.checked)) {
+                    selectAllCourses.checked = true;
+                }
+            });
+        });
+    </script>
+{% endblock %}

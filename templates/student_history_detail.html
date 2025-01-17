@@ -1,0 +1,42 @@
+<!-- users/templates/student_history_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">历史记录详情</h2>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ question.Title }}</h4>
+            <p class="card-text"><strong>试题内容：</strong> {{ question.Content }}</p>
+            <hr>
+            <p class="card-text"><strong>我的作答：</strong></p>
+            <p>{{ answer.Content }}</p>
+            {% if answer.File %}
+                <p>上传的文件：</p>
+                <a href="{{ answer.File.url }}" target="_blank">下载文件</a>
+            {% endif %}
+            <hr>
+            <p class="card-text"><strong>分数：</strong>
+                {% if scoring_feedback.IsFinal %}
+                    {{ scoring_feedback.Score }}
+                {% else %}
+                    暂无评分
+                {% endif %}
+            </p>
+            <p class="card-text"><strong>教师评价：</strong>
+                {% if scoring_feedback.IsFinal %}
+                    {{ scoring_feedback.Feedback }}
+                {% else %}
+                    暂无评价
+                {% endif %}
+            </p>
+            <p class="card-text"><strong>评分标准：</strong>
+                {% if scoring_feedback.IsFinal %}
+                    {{ question.ScoringCriteria }}
+                {% else %}
+                    暂未公布评分标准
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <a href="{% url 'student_course_detail' course_id %}" class="btn btn-secondary mt-3">返回课程详情</a>
+{% endblock %}

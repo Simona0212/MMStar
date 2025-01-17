@@ -1,0 +1,63 @@
+<!-- templates/join_course.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">加入课程</h2>
+<form method="POST" class="mb-4">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="course_search">搜索课程（课程ID或名称）:</label>
+        <input type="text" name="course_search" id="course_search" class="form-control" value="{{ course_search }}"
+            required>
+    </div>
+    <button type="submit" class="btn btn-success">搜索</button>
+    <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">返回</a>
+</form>
+
+{% if courses is not None %}
+<h3 class="section-title">搜索结果</h3>
+<form method="POST" action="#">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 5%;">选择</th>
+                <th style="width: 7%;">课程ID</th>
+                <th style="width: 20%;">课程名称</th>
+                <th style="width: 68%;">描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td><input type="radio" name="selected_course" value="{{ course.CourseID }}"></td>
+                <td>{{ course.CourseID }}</td>
+                <td>{{ course.Name }}</td>
+                <td style="text-align: left;">{{ course.Description|default:"无" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">未找到相关课程</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if courses %}
+    <button type="submit" formaction="{% url 'confirm_join_course' 0 %}" id="confirm_join_button"
+        class="btn btn-primary" disabled>确认加入</button>
+    <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">取消</a>
+    {% endif %}
+</form>
+
+<script>
+    const radioButtons = document.getElementsByName('selected_course');
+    const confirmButton = document.getElementById('confirm_join_button');
+    for (var rb of radioButtons) {
+        rb.addEventListener('change', function () {
+            confirmButton.setAttribute('formaction', '/confirm_join_course/' + this.value + '/');
+            confirmButton.disabled = false;
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

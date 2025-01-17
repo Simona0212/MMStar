@@ -1,0 +1,156 @@
+<!-- users/templates/view_and_grade_answer.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<!-- 集成Bootstrap CSS以增强样式 -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+{% block content %}
+<h2 class="page-title">评价答案</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header" style="background-color: #D7E6DE; border-radius: 4px;">
+                <h4 class="section-title" style="text-align: center;">试题内容</h4>
+            </div>
+            <div class="card-body"">
+                {% if question.Content %}
+                <pre class=" scrollable-text bg-light p-3 border rounded"
+                style="max-height: 200px; max-width: 1000px; overflow-y: auto; background-color: #FFFFFF;">{{question.Content|linebreaksbr }}</pre>
+                {% else %}
+                <p class="text-muted">暂无内容</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header"  style="background-color: #CBE6FE; border-radius: 4px;">
+                <h4 class="section-title" style="text-align: center;">学生答案</h4>
+            </div>
+            <div class="card-body">
+                {% if answer.Content %}
+                <pre class="scrollable-text bg-light p-3 border rounded"
+                    style="max-height: 200px; max-width: 1000px; overflow-y: auto; background-color: #FFFFFF;">{{ answer.Content|linebreaksbr }}</pre>
+                {% else %}
+                <p class="text-muted">无</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm bg-light border-muted mb-3">
+            <div class="card-header text-center py-3" style="background-color: #61BAAD; border-radius: 4px;">
+                <h4 class="section-title" style="color: #FFFFFF;">评分标准</h4>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-star-fill text-warning me-2" style="font-size: 2rem;"></i>
+                    <pre class="scrollable-text bg-light p-3 border rounded"
+                        style="max-height: 200px; max-width: 1000px; overflow-y: auto; background-color: #FFFFFF;">{{ question.ScoringCriteria }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .card-header {
+                padding: 0.1rem;
+                /* 增加标题框的内边距 */
+                line-height: 0.3;
+                /* 增加行高，让文字看起来更舒展 */
+            }
+
+            .card-body {
+                min-height: auto;
+                max-height: none;
+                overflow: visible;
+            }
+
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                /* margin: 1; */
+                /* padding: 0.5rem; */
+                margin: 1rem 0;
+                /* 调整上方和下方的外边距 */
+                padding: 1rem;
+                /* 增加内边距，让内容与边框之间留出更多空间 */
+                background-color: #FFF6FF;
+                border-radius: 0.25rem;
+            }
+        </style>
+
+        <div class="card shadow-sm bg-light border-primary mb-3">
+            <div class="card-header bg-primary text-white text-center py-3" style=" border-radius: 4px;">
+                <h4 class="section-title" style="color: #FFFFFF;">生成的评分与反馈</h4>
+            </div>
+            <div class="card-body">
+                {% if scoring_feedback %}
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-star-fill text-warning me-2"
+                        style="font-size: 1.5rem; padding: 1rem; margin: 1rem;"></i>
+                    <div>
+                        <p class="mb-0">
+                            <label>分数：</label><pre class="scrollable-text bg-light p-3 border rounded"
+                            style="max-height: 200px; max-width: 1000px; overflow-y: auto; background-color: #FFFFFF;">{{ scoring_feedback.Score }}</pre>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-chat-left-text-fill text-info me-2" style="font-size: 1.5rem; "></i>
+                    <div>
+                        <p class="mb-0"><label>反馈：</label>
+                        <pre class="scrollable-text bg-light p-3 border rounded"
+                            style="max-height: 200px; max-width: 1000px; overflow-y: auto; background-color: #FFFFFF;">{{ scoring_feedback.Feedback }}</pre>
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-muted text-center" style="padding: 1rem; font-size: 1.5rem;">尚未生成评分与反馈</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+
+
+
+<h4 class="section-title">教师评分与反馈</h4>
+<button id="import-ai-feedback-btn" class="btn btn-primary">导入生成的评价</button>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">确认并发布评价</button>
+    <a href="{% url 'grade_answers' course.CourseID question.QuestionID %}" class="btn btn-secondary">返回学生答案列表</a>
+</form>
+<hr>
+
+
+<!-- 传递参数给 JavaScript -->
+{{ course.CourseID|json_script:"course-id" }}
+{{ question.QuestionID|json_script:"question-id" }}
+{{ answer.AnswerID|json_script:"answer-id" }}
+
+<script src="{% static 'js/view_and_grade_answer.js' %}"></script>
+
+
+<div class="d-flex justify-content-between">
+    {% if previous_id %}
+    <a href="{% url 'view_and_grade_answer' course.CourseID question.QuestionID previous_id %}"
+        class="btn btn-primary">上一个</a>
+    {% else %}
+    <button class="btn btn-primary" disabled>上一个</button>
+    {% endif %}
+
+    {% if next_id %}
+    <a href="{% url 'view_and_grade_answer' course.CourseID question.QuestionID next_id %}"
+        class="btn btn-primary">下一个</a>
+    {% else %}
+    <button class="btn btn-primary" disabled>下一个</button>
+    {% endif %}
+</div>
+
+{% endblock %}

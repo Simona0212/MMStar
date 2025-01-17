@@ -1,0 +1,169 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% load static %} <!-- 加载静态文件标签库 -->
+{% block content %}
+
+
+<!-- 轮播组件 -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-bs-interval="2000">
+    <!-- 轮播指标 -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    <!-- 轮播项目 -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="{% static '/img/slide1.png' %}" alt="First slide" class="img-responsive">
+            <div class="carousel-caption d-none d-md-block">慧评星<br>MMStar</div>
+        </div>
+        <div class="item">
+            <img src="{% static '/img/slide2.png' %}" alt="Second slide" class="img-responsive">
+            <div class="carousel-caption d-none d-md-block">智能阅卷 AI评卷</div>
+        </div>
+        <div class="item">
+            <img src="{% static '/img/slide3.png' %}" alt="Third slide" class="img-responsive">
+            <div class="carousel-caption d-none d-md-block">请各位同学严格遵守作业要求</div>
+        </div>
+    </div>
+
+    <!-- 轮播导航 -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+
+<div class="content text-center">
+    <h1><small>欢迎使用</small></h1>
+    <h1><strong>慧评星</strong></h1>
+    <h1>智能阅卷与反馈系统</h1>
+    <!-- <h2><small>-请选择登录或注册以继续-</small></h2> -->
+</div>
+
+
+<div class="about-us-section">
+    <h1 class="about-us-title">关于我们</h1>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- 引入Google Fonts -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'fonts/Pacifico.css' %}">
+    <div class="about-us-content">
+        <div class="item">
+            <div class="number">1</div>
+            <div class="description">
+                <h2>智能化教育评价，提升阅卷效率与反馈质量</h2>
+                <p><span class="highlight">慧评星(Mind Mark Star,
+                        MMStar)</span>系统专注于教育评价领域中的主观题智能评阅，通过结合自然语言处理技术和先进的大语言模型，为教育机构提供高效的主观题评分和深度反馈解决方案。传统阅卷方式依赖人工，耗时且带有较强的主观性。慧评星系统旨在利用智能化手段，大幅提高阅卷效率，并提供数据驱动、细粒度的反馈，以辅助教学改进，更注重学生思维能力与语言表达等综合素质的评估。
+                </p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="number">2</div>
+            <div class="description">
+                <h2 class="about-us-content">技术创新驱动，确保评分精准与服务优化</h2>
+                <p>在技术层面，慧评星系统采用大语言模型API接口，融合自然语言处理与语义分析技术，对主观题答案进行深入理解和智能评分。系统不仅提高了评分准确性，还能通过分层次的答案分析（如结构、逻辑、关键点覆盖）来捕捉更多细节。此外，系统的性能得到了显著增强，包括优化的存取速度、批量评分功能等，同时提供个性化学习建议和多语言支持，确保了服务的广泛适用性和灵活性。
+                </p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="number">3</div>
+            <div class="description">
+                <h2>用户友好设计，满足多样化应用场景需求</h2>
+                <p>为了提供最佳用户体验，慧评星系统设计了简洁直观的界面，分为教师端和学生端，分别针对不同的用户群体提供相应的功能模块。系统强调人性化的交互设计，例如实时校对格式、人机交互评分等功能，确保使用便捷高效。该系统适用于多种场景，包括但不限于中小学及高校的线上考试、网课平台的作业评阅，以及企业培训的效果评估。整个过程形成了一个功能闭环：从学生提交答案，到智能评分和反馈生成，再到教师审核确认，最后数据存储与报告生成，全面支持教育评价的智能化转型。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> -->
+
+<div class="content text-center">
+    <address>
+        <strong>有问题请联系</strong><br>
+        <a>admin@example.com</a>
+    </address>
+</div>
+<style>
+    .about-us-section {
+        padding: 40px;
+        /* 顶部和底部留出空间 */
+        background-color: #EAEDFD;
+        margin: 0px;
+        /* 左右留出空间 */
+        border-radius: 8px;
+    }
+
+    /* .no-backgroundclip .about-us-title {*/
+    /* color: #558EF8; 不支持时的回退颜色 */
+    /* } */
+    .about-us-title {
+        font-size: 3.5em;
+        font-family: 'Noto Sans Simplified';
+        /* ,cursive 是手写体 */
+        background: linear-gradient(135deg, #558EF8 0%, #797CE0 5%, #8D6AC6 10%, #ad78bf 15%);
+        /* 渐变色 */
+        /* -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;  */
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        margin-bottom: 20px;
+    }
+
+    .about-us-content {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .item {
+        display: flex;
+        /* 横向布局 */
+        align-items: center;
+        gap: 40px;
+        /* 间距 */
+    }
+
+    .number {
+        background-color: #424656;
+        color: #eaeaea;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 2em;
+        width: 40px;
+        text-align: center;
+    }
+
+    .description {
+        flex: 1;
+        /* 占据剩余空间 */
+    }
+
+    .description h2 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .description p {
+        font-size: 1.3em;
+        line-height: 1.8;
+    }
+
+    .highlight {
+        color: #368EFF;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

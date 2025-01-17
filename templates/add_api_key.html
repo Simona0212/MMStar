@@ -1,0 +1,12 @@
+<!-- templates/add_api_key.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">新增 API KEY 分配</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">确认添加</button>
+        <a href="{% url 'api_key_management' %}" class="btn btn-secondary">取消</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!-- templates/student_dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">学生主页</h2>
+<!-- <p>欢迎，{{ student.Name }}!</p> -->
+
+<div class="mb-4">
+    <h3 class="section-title">我的课程</h3>
+    <a href="{% url 'join_course' %}" class="btn btn-primary mb-2">加入课程</a>
+    <a href="{% url 'leave_course' %}" class="btn delete-btn mb-2">退出课程</a>
+    <br><br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 7%;">课程ID</th>
+                <th style="width: 12%;">课程名称</th>
+                <th style="width: 8%;">授课老师</th>
+                <th style="width: 65%;">课程描述</th>
+                <th style="width: 8%;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sc in enrolled_courses %}
+            <tr>
+                <td>{{ sc.CourseID.CourseID }}</td>
+                <td>{{ sc.CourseID.Name }}</td>
+                <td>{{ sc.CourseID.TeacherID.Name }}</td>
+                <td style="text-align: left;">{{ sc.CourseID.Description|default:"无" }}</td>
+                <td>
+                    <a href="{% url 'student_course_detail' sc.CourseID.CourseID %}"
+                        class="btn btn-sm btn-info">进入课程</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">您尚未加入任何课程</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

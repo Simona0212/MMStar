@@ -1,0 +1,16 @@
+<!-- users/templates/edit_prompt.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">编辑试题 Prompt：{{ question.Title }}</h2>
+    <p><strong>所属课程：</strong>{{ question.CourseID.Name }}</p>
+    <p><strong>试题内容：</strong>{{ question.Content }}</p>
+    <p><strong>评分标准：</strong>{{ question.ScoringCriteria|default:"无" }}</p>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">确认修改</button>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">取消</a>
+    </form>
+{% endblock %}

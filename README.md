@@ -65,4 +65,6 @@
     "reason": “对外码约束规则与普通参照完整性规则的认识基本正确，表述清晰，但没有提及普通参照完整性规则在取值方面的要求，扣1分。”
 }
 ```
+## 许可
 
+本仓库使用 [MIT LICENSE](https://github.com/Simona0212/MMStar/blob/main/LICENSE) 许可。
